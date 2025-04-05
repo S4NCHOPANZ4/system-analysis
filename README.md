@@ -1,4 +1,9 @@
-# 🔍 Analysis Phases
+# Workshop I 
+<small>Juan David Buitrago Rodriguez - 20242020194</small>
+<br>
+<small>David Giovanni Aza Carvajal - 20241020137</small>
+
+## 🔍 Analysis 
 
 📄 **[Read Full Report](./Workshop-I/Workshop_I_Report.pdf)**
 
@@ -6,7 +11,7 @@ The analysis conducted for this report was structured into four key phases, each
 
 ---
 
-##  Phases 
+###  Phases 
 
 - **1. Data & Overview Analysis**
   - 📚 **Objective:** Understand the dataset and initial data structure.
