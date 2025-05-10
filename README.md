@@ -33,7 +33,8 @@ To build our Convolutional Neural Network (CNN) for classifying histological kid
 
 2. **Reviewed Scientific Literature:** We consulted key sources such as [Deep Learning for Semantic Segmentation in Histology](https://www.mdpi.com/2078-2489/16/3/195), which helped us understand histological image processing and neural network architectures relevant to biomedical tasks. Although the paper focuses on segmentation, we adapted its insights for a classification task.
 
-3. **Implemented the Model:** We developed a custom classifier based on **ResNet50** augmented with **CBAM (Convolutional Block Attention Module)**. This model was pretrained on ImageNet and fine-tuned to distinguish between three classes: *Glomerulus*, *Blood Vessel*, and *Unsure*. The CBAM module improves the model’s attention to relevant spatial and channel features in histological tiles.
+3. **Implemented the Model:** We built a custom classifier using **ResNet50** enhanced with **CBAM (Convolutional Block Attention Module)**. Starting from ImageNet-pretrained weights, the model was fine-tuned to identify three classes in kidney histology tiles: *Glomerulus*, *Blood Vessel*, and *Unsure*. The addition of CBAM helps the network focus more effectively on meaningful spatial and channel-wise features, improving its ability to capture subtle patterns in the tissue.
+
 
 4. **Prepared the Data:** Whole-slide `.tif` images were divided into 512×512 tiles. Each tile was preprocessed using resizing and normalization, then passed through the model for classification.
 
