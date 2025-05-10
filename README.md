@@ -47,9 +47,10 @@ The model workflow is as follows:
 
 This pipeline provides a fast and scalable method for classifying high-resolution histology data using deep learning and attention-enhanced CNNs.
 
-5. **Applied the Concepts:** In the **[/code](./Workshop-II/code)** folder, we attempted to put into practice what we learned by implementing a custom classification pipeline. This included experimenting with architecture improvements and aiming to better capture relevant histological patterns.
+5. **Applied the Concepts:** In the **[/code](./Workshop_2_Design/code)** folder, we tried to apply what we learned by creating a custom CNN Implementation. This involved testing out different architectural changes and making adjustments to improve the system.
 
-📘 **[Return to Report](./Workshop-II/Workshop_II_Report.pdf)**
+
+📘 **[Return to Report](./Workshop_2_Design/Workshop_II_Report.pdf)**
 
 
 ---
