@@ -25,19 +25,27 @@ In this project, we used **system analysis** to better understand the problem an
 
 ---
 
-### 🧬 CNN Creation Process
+### 🧬 CNN Implementation/Analysis Process
 
-To build our Convolutional Neural Network (CNN) for blood vessel segmentation, we followed these steps:
+To build our Convolutional Neural Network (CNN) for classifying histological kidney images, we followed a structured process:
 
-1. **Studied the Domain:** We explored the structure of histological slides and how vessels are annotated in `.tif` masks.
-2. **Read Scientific Literature:** A key paper, [Deep Learning for Semantic Segmentation in Histology](https://www.mdpi.com/2078-2489/16/3/195), helped us understand the best practices. It showed how CNNs are used for similar tasks and explained common challenges and architectures (like U-Net).
-3. **Designed the Model:** Inspired by the paper and notebooks, we implemented a U-Net-based model with a backbone pretrained on ImageNet.
-4. **Prepared the Data:** We used data augmentation, normalization, and converted `.tif` images into smaller patches suitable for training.
-The model works in the following way:
+1. **Studied the Domain:** We analyzed histology slide structure and annotation formats, focusing on `.tif` images containing kidney tissue regions.
 
-- Each tile is processed by a neural network (ResNet50 with attention blocks) to extract important features.
-- These features are passed through layers that help the model focus on patterns, reduce noise, and improve accuracy.
-- Finally, a classifier assigns a label to each tile — such as *blood vessel*, *glomerulus*, or *unsure*.
+2. **Reviewed Scientific Literature:** We consulted key sources such as [Deep Learning for Semantic Segmentation in Histology](https://www.mdpi.com/2078-2489/16/3/195), which helped us understand histological image processing and neural network architectures relevant to biomedical tasks. Although the paper focuses on segmentation, we adapted its insights for a classification task.
+
+3. **Implemented the Model:** We developed a custom classifier based on **ResNet50** augmented with **CBAM (Convolutional Block Attention Module)**. This model was pretrained on ImageNet and fine-tuned to distinguish between three classes: *Glomerulus*, *Blood Vessel*, and *Unsure*. The CBAM module improves the model’s attention to relevant spatial and channel features in histological tiles.
+
+4. **Prepared the Data:** Whole-slide `.tif` images were divided into 512×512 tiles. Each tile was preprocessed using resizing and normalization, then passed through the model for classification.
+
+The model workflow is as follows:
+
+- A `.tif` image is split into fixed-size tiles.
+- Each tile is preprocessed and passed into the ResNet50_CBAM model.
+- The model predicts class probabilities using a softmax layer.
+- Predictions per tile are printed and optionally stored in a table for analysis.
+
+This pipeline provides a fast and scalable method for classifying high-resolution histology data using deep learning and attention-enhanced CNNs.
+
 
 📘 **[Return to Report](./Workshop-II/Workshop_II_Report.pdf)**
 
