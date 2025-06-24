@@ -8,37 +8,69 @@
 
 ---
 
-# Workshop III 
+# 🧬 Workshop III: Kidney Blood Vessel Simulation
 
-## 💉 Kidney Blood Vessel Simulation - Cellular Automaton in Python
+This project simulates the development and dynamics of kidney blood vessels using a **Cellular Automaton** written in **Python** with **Tkinter** and **Pillow**. It models arteries, vessels, aneurysms, glomeruli, dead cells, and their behaviors in a histological grid.
 
-This project simulates the growth and behavior of blood vessels using a **cellular automaton** built with **Python** and **Tkinter**. It models arteries, healthy vessels, aneurysms, cell death, hypoxia, and vessel regeneration.
+---
+
+## 🎯 Purpose
+
+- To simulate kidney vascular tissue behavior and response to pathophysiological conditions like aneurysms or isolation.
+- To process histological grayscale images and classify them into meaningful biological structures.
+- To study vascular propagation and vessel repair patterns interactively.
 
 ---
 
 ## 🧪 Simulation Rules
 
-| Cell Type      | Code | Color         | Behavior                                                                                                                                   |
-|----------------|------|---------------|--------------------------------------------------------------------------------------------------------------------------------------------|
-| **Artery**     | `A`  | Red           | - Constantly generates vessels in all cardinal directions (up, down, left, right).<br> - Always surrounded by live vessels.               |
-| **Live Vessel**| `V`  | Blue (darker with more vessel neighbors, lighter with fewer) | - Propagates to adjacent empty cells (cardinal directions) with probability.<br> - Dies if isolated (no adjacent vessels).<br> - Becomes aneurysm if ≥ 5 vessel/artery neighbors (in 8 directions). |
-| **Aneurysm**   | `X`  | Orange        | - Explodes if ≥ 2 aneurysm neighbors (8 directions).<br> - Explosion destroys vessels within a radius (`EXPLOSION_RADIUS`).<br> - Cures back to vessel if surrounded by < 4 vessels. |
-| **Dead Vessel**| `D`  | Black         | - Can regenerate into a vessel if it has ≥ 1 live vessel/artery neighbor (cardinal directions).                                            |
-| **Empty**      | `T`  | White         | - May become a vessel if near an artery or through vessel propagation.                                                                   |
-| **Hypoxia**    | `H`  | Yellow        | - Visual marker; not yet used in simulation logic.                                                                                        |
+| Cell Type        | Code | Color                        | Behavior                                                                                                                                   |
+|------------------|------|------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| **Artery**       | `A`  | Red                          | Constantly generates vessels in **cardinal directions** (↑ ↓ ← →). Always maintains adjacent vessels.                                      |
+| **Vessel**       | `V`  | Blue (intensity based on neighbors) | Propagates to empty adjacent cells with probability `PROPAGATION_CHANCE`.<br>Dies if **isolated**.<br>Becomes **aneurysm** if ≥ `ANEURYSM_THRESHOLD` vessel/artery neighbors. |
+| **Aneurysm**     | `X`  | Orange                       | Explodes if ≥ `ANEURYSM_EXPLODE_NEIGHBORS` aneurysm neighbors (cardinal).<br>Destroys nearby vessels within `EXPLOSION_RADIUS`.<br>Cures if surrounded by < `ANEURYSM_CURE_NEIGHBORS` vessels. |
+| **Dead Cell**    | `D`  | Black                        | Revives into vessel if ≥ `REVIVE_DEAD_NEIGHBORS` vessel/artery neighbors.                                                                 |
+| **Empty**        | `T`  | White                        | Can be converted into vessels by arteries or through propagation.                                                                         |
+| **Glomerulus**   | `G`  | Green                        | Static biological filters. Marked as `G` when well vascularized.<br>Becomes `GF` (failing) if poorly irrigated (low vessel/artery support). |
+| **Glomerulus (Failing)** | `GF` | Olive                     | Degrades from `G` if lacking support from nearby vessels or arteries.                                                                    |
 
 ---
 
-## ⚙️ Global Parameters
+## 🧠 Color Behavior
 
-The following parameters can be easily modified to tune the behavior:
+- **Vessels** (`V`) get **darker blue** when surrounded by more vessels or arteries (8 directions), and become lighter as they're isolated.
+- **Aneurysms** are marked with a **bright orange**.
+- **Glomeruli** are **green** when functional, and **olive** (`GF`) when not sufficiently irrigated.
+
+---
+
+## 🖼️ Image Integration
+
+- You can **load grayscale kidney histology images** and convert them into grid states.
+- Image pixels are classified by intensity:
+  
+  | Intensity Range | Cell Type |
+  |------------------|------------|
+  | < 90             | `A` Artery |
+  | 90–129           | `V` Vessel |
+  | 130–139          | `G` Glomerulus |
+  | ≥ 140            | `T` Empty |
+
+- Processed images are resized to `GRID_SIZE x GRID_SIZE` and visualized on the canvas.
+
+---
+
+## 🛠️ Global Parameters
+
+You can adjust these in the Python code to change simulation sensitivity:
 
 ```python
-EXPLOSION_RADIUS = 2           # Radius of aneurysm destruction
-PROPAGATION_PROB = 0.3         # Probability that a vessel creates a new vessel nearby
-ANEURISM_THRESHOLD = 5         # Neighbor count (8 directions) to trigger aneurysm
-CURE_THRESHOLD = 4             # If an aneurysm has fewer neighbors than this, it heals
-DEAD_CURE_NEIGHBORS = 1        # Number of live neighbors needed to revive a dead vessel
+PROPAGATION_CHANCE = 0.3          # Vessel spread probability
+ANEURYSM_THRESHOLD = 5            # Neighbors to trigger aneurysm
+ANEURYSM_EXPLODE_NEIGHBORS = 2    # Aneurysm neighbors needed to explode
+ANEURYSM_CURE_NEIGHBORS = 4       # Vessels needed to heal an aneurysm
+REVIVE_DEAD_NEIGHBORS = 1         # Neighbors needed to revive a dead cell
+EXPLOSION_RADIUS = 2              # Radius affected by aneurysm explosion
 ```
 
 ---
