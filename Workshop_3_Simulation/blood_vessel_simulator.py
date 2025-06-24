@@ -3,6 +3,8 @@ from tkinter import filedialog, Toplevel, Label, Button, messagebox
 from PIL import Image, ImageTk
 import random
 import math
+import csv
+import os
 
 GRID_SIZE = 60
 CELL_SIZE = 10
@@ -19,13 +21,13 @@ REVIVE_DEAD_NEIGHBORS = 1
 
 def classify_pixel(value):
     if value < 90:
-        return "A"  
+        return "A"
     elif value < 130:
-        return "V"  
+        return "V"
     elif 130 <= value < 140:
-        return "G"  
+        return "G"
     else:
-        return "T" 
+        return "T"
 
 
 class ImageLoaderPopup:
@@ -71,6 +73,7 @@ class ImageLoaderPopup:
         else:
             messagebox.showwarning("No Image", "Please load an image before continuing.")
 
+
 class BloodVesselSimulation:
     def __init__(self, root):
         self.root = root
@@ -85,23 +88,21 @@ class BloodVesselSimulation:
         self.grid = [["T" for _ in range(GRID_SIZE)] for _ in range(GRID_SIZE)]
         self.pressure = [[0 for _ in range(GRID_SIZE)] for _ in range(GRID_SIZE)]
 
+        self.iteration = 0
+        self.history = []  # Guardar datos por paso
+
         self.create_toolbar(root)
         self.canvas.bind("<Button-1>", self.handle_click)
         self.draw_grid()
-
-        # Immediately show image loader popup
         self.show_image_loader()
 
     def show_image_loader(self):
-        # Obtener posición de la ventana principal
         self.root.update_idletasks()
         x = self.root.winfo_x()
         y = self.root.winfo_y()
         width = self.root.winfo_width()
-        
-        # Mostrar popup a la derecha
         popup = ImageLoaderPopup(self.root, self.apply_image_grid)
-        popup.popup.geometry(f"+{x + width + 20}+{y}")  # 20 píxeles de separación
+        popup.popup.geometry(f"+{x + width + 20}+{y}")
 
     def apply_image_grid(self, new_grid):
         self.grid = [row[:GRID_SIZE] + ["T"] * (GRID_SIZE - len(row)) for row in new_grid]
@@ -130,9 +131,13 @@ class BloodVesselSimulation:
         self.btn_step.pack(side="left")
 
         self.btn_reset = tk.Button(frame, text="Reset", command=self.reset_simulation)
+        self.btn_reset.pack(side="left", padx=10)
+
+        self.btn_save = tk.Button(frame, text="Save CSV Results", command=self.save_to_csv)
+        self.btn_save.pack(side="left", padx=10)
+
         self.btn_load_image = tk.Button(frame, text="Load New Image", command=self.show_image_loader)
         self.btn_load_image.pack(side="left", padx=10)
-        self.btn_reset.pack(side="left", padx=10)
 
     def set_tool(self, tool_code):
         self.current_tool = tool_code
@@ -145,6 +150,8 @@ class BloodVesselSimulation:
     def reset_simulation(self):
         self.grid = [["T" for _ in range(GRID_SIZE)] for _ in range(GRID_SIZE)]
         self.pressure = [[0 for _ in range(GRID_SIZE)] for _ in range(GRID_SIZE)]
+        self.iteration = 0
+        self.history = []
         self.edit_mode = True
         self.btn_start.config(state="normal")
         self.btn_step.config(state="disabled")
@@ -211,8 +218,10 @@ class BloodVesselSimulation:
         return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
     def step(self):
+        self.iteration += 1
         new_vessels = set()
         aneurysms_to_explode = []
+        aneurysms_cured = 0
 
         for i in range(GRID_SIZE):
             for j in range(GRID_SIZE):
@@ -245,6 +254,7 @@ class BloodVesselSimulation:
                         aneurysms_to_explode.append((i, j))
                     elif v_neigh < ANEURYSM_CURE_NEIGHBORS:
                         self.grid[i][j] = "V"
+                        aneurysms_cured += 1
 
         for i in range(GRID_SIZE):
             for j in range(GRID_SIZE):
@@ -273,10 +283,38 @@ class BloodVesselSimulation:
                     else:
                         self.grid[i][j] = "GF"
 
+        self.record_current_data(aneurysms_cured, len(aneurysms_to_explode))
         self.draw_grid()
 
+    def record_current_data(self, aneurysms_cured, aneurysms_exploded):
+        count = lambda val: sum(cell == val for row in self.grid for cell in row)
+        data = {
+            "iteration": self.iteration,
+            "glomeruli_active": count("G"),
+            "glomeruli_failed": count("GF"),
+            "vessels": count("V"),
+            "dead_vessels": count("D"),
+            "aneurysms_cured": aneurysms_cured,
+            "aneurysms_exploded": aneurysms_exploded,
+        }
+        self.history.append(data)
 
-# MAIN
+    def save_to_csv(self):
+        if not self.history:
+            messagebox.showinfo("No Data", "No data to sve.")
+            return
+        base_path = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(base_path, "simulation_log.csv")
+        try:
+            with open(file_path, "w", newline='') as f:
+                writer = csv.DictWriter(f, fieldnames=list(self.history[0].keys()))
+                writer.writeheader()
+                writer.writerows(self.history)
+            messagebox.showinfo("Success", "Results saved to simulation_log.csv")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to save: {e}")
+
+
 if __name__ == "__main__":
     root = tk.Tk()
     app = BloodVesselSimulation(root)
