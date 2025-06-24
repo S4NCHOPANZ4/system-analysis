@@ -8,6 +8,66 @@
 
 ---
 
+# Workshop III 
+
+## 💉 Blood Vessel Simulation - Cellular Automaton in Python
+
+This project simulates the growth and behavior of blood vessels using a **cellular automaton** built with **Python** and **Tkinter**. It models arteries, healthy vessels, aneurysms, cell death, hypoxia, and vessel regeneration.
+
+---
+
+## 🧪 Simulation Rules
+
+| Cell Type      | Code | Color         | Behavior                                                                                                                                   |
+|----------------|------|---------------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| **Artery**     | `A`  | Red           | - Constantly generates vessels in all cardinal directions (up, down, left, right).<br> - Always surrounded by live vessels.               |
+| **Live Vessel**| `V`  | Blue (darker with more vessel neighbors, lighter with fewer) | - Propagates to adjacent empty cells (cardinal directions) with probability.<br> - Dies if isolated (no adjacent vessels).<br> - Becomes aneurysm if ≥ 5 vessel/artery neighbors (in 8 directions). |
+| **Aneurysm**   | `X`  | Orange        | - Explodes if ≥ 2 aneurysm neighbors (8 directions).<br> - Explosion destroys vessels within a radius (`EXPLOSION_RADIUS`).<br> - Cures back to vessel if surrounded by < 4 vessels. |
+| **Dead Vessel**| `D`  | Black         | - Can regenerate into a vessel if it has ≥ 1 live vessel/artery neighbor (cardinal directions).                                            |
+| **Empty**      | `T`  | White         | - May become a vessel if near an artery or through vessel propagation.                                                                   |
+| **Hypoxia**    | `H`  | Yellow        | - Visual marker; not yet used in simulation logic.                                                                                        |
+
+---
+
+## ⚙️ Global Parameters
+
+The following parameters can be easily modified to tune the behavior:
+
+```python
+EXPLOSION_RADIUS = 2           # Radius of aneurysm destruction
+PROPAGATION_PROB = 0.3         # Probability that a vessel creates a new vessel nearby
+ANEURISM_THRESHOLD = 5         # Neighbor count (8 directions) to trigger aneurysm
+CURE_THRESHOLD = 4             # If an aneurysm has fewer neighbors than this, it heals
+DEAD_CURE_NEIGHBORS = 1        # Number of live neighbors needed to revive a dead vessel
+```
+
+---
+
+## 🖱️ How to Use
+
+1. When you launch the simulation, an empty grid will appear.
+2. Use the buttons to select a cell type:
+   - Artery (A)
+   - Vessel (V)
+   - Aneurysm (X)
+   - Dead (D)
+   - Empty (T)
+   - Hypoxia (H)
+3. Click on the grid to place cells.
+4. Click **Start Simulation** to begin.
+5. Use **Step** to advance the simulation manually.
+6. Click **Reset** to clear the board and start over.
+
+---
+
+## 📦 Requirements
+
+- Python 3.x
+- Tkinter (usually pre-installed with Python)
+
+---
+
+
 # Workshop II 
 
 📄 **[Read Full Report](./Workshop_2_Design/Workshop_II.pdf)**
