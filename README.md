@@ -5,10 +5,13 @@
 
 - [Workshop I](#workshop-i)
 - [Workshop II](#workshop-ii)
+- [Workshop III](#workshop-iii)
 
 ---
 
-# 🧬 Workshop III: Kidney Blood Vessel Simulation
+# Workshop III
+
+📄 **[Read Full Report](./Workshop_3_Simulation/Workshop_III_Report.pdf)**
 
 This project simulates the development and dynamics of kidney blood vessels using a **Cellular Automaton** written in **Python** with **Tkinter** and **Pillow**. It models arteries, vessels, aneurysms, glomeruli, dead cells, and their behaviors in a histological grid.
 
@@ -89,7 +92,8 @@ EXPLOSION_RADIUS = 2              # Radius affected by aneurysm explosion
 4. Click on the grid to place cells.
 5. Click **Start Simulation** to begin.
 6. Use **Step** to advance the simulation manually.
-7. Click **Reset** to clear the board and start over.
+7. Click **Save CSV Result** to save your simulation data in a .csv file.  
+8. Click **Reset** to clear the board and start over.
 
 ---
 
@@ -103,6 +107,12 @@ EXPLOSION_RADIUS = 2              # Radius affected by aneurysm explosion
 - pip             23.2.1
 - pyparsing       3.2.3
 - Tkinter  (pre-installed with Python)
+
+
+
+📄 **[Read Full Workshop III Report](./Workshop_3_Simulation/Workshop_III_Report.pdf)**
+
+
 ---
 
 
