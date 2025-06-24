@@ -10,7 +10,7 @@
 
 # Workshop III 
 
-## 💉 Blood Vessel Simulation - Cellular Automaton in Python
+## 💉 Kidney Blood Vessel Simulation - Cellular Automaton in Python
 
 This project simulates the growth and behavior of blood vessels using a **cellular automaton** built with **Python** and **Tkinter**. It models arteries, healthy vessels, aneurysms, cell death, hypoxia, and vessel regeneration.
 
@@ -53,10 +53,11 @@ DEAD_CURE_NEIGHBORS = 1        # Number of live neighbors needed to revive a dea
    - Dead (D)
    - Empty (T)
    - Hypoxia (H)
-3. Click on the grid to place cells.
-4. Click **Start Simulation** to begin.
-5. Use **Step** to advance the simulation manually.
-6. Click **Reset** to clear the board and start over.
+3. Alternatively, you can upload a histological image of a kidney for better analysis, located in [images_to_use](./Workshop_3_Simulation/data/images_to_use/)
+4. Click on the grid to place cells.
+5. Click **Start Simulation** to begin.
+6. Use **Step** to advance the simulation manually.
+7. Click **Reset** to clear the board and start over.
 
 ---
 
