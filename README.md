@@ -62,9 +62,14 @@ DEAD_CURE_NEIGHBORS = 1        # Number of live neighbors needed to revive a dea
 
 ## 📦 Requirements
 
-- Python 3.x
-- Tkinter (usually pre-installed with Python)
-
+- contourpy       1.3.2
+- cycler          0.12.1
+- matplotlib      3.10.3
+- numpy           2.3.1
+- pillow          11.2.1
+- pip             23.2.1
+- pyparsing       3.2.3
+- Tkinter  (pre-installed with Python)
 ---
 
 
